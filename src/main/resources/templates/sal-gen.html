@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<div th:include="emp-header"></div>
+
+<body>
+   <!-- Navbar -->
+   <div th:include="emp-navigation"></div>
+
+
+   <!-- Overlay effect when opening sidebar on small screens -->
+   <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu"
+      id="myOverlay"></div>
+   <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+   <div class="w3-main" style="margin-left:250px">
+      <div class="w3-row w3-padding-64">
+         <div class="w3-twothird w3-container">
+
+            <span th:if="${reqHtml != ''}">
+               <p th:text="${reqHtml}"></p>
+            </span>
+
+            <form action="#" th:action="@{/employee/sal-gen}" th:object="${employee}" enctype="multipart/form-data"
+               method="post">
+               <h1> Employees Salaries for the month </h1>
+               </br>
+               <table border="3">
+                  <tr>
+                     <td align="center"> <strong> S. No </strong></td>
+                     <td align="center"> <strong> Name </strong></td>
+                     <td align="center"> <strong> Available Leaves </strong></td>
+                     <td align="center"> <strong> Leaves Taken </strong></td>
+                     <td align="center"> <strong> This Month Salary </strong></td>
+                     <td align="center"> <strong> TDS </strong></td>
+                     <td align="center"> <strong> Salary After TDS </strong></td>
+                     <td align="center"> <strong> Actual Salary </strong></td>
+                     <td align="center"> <strong> Action </strong></td>
+                  </tr>
+
+                  <tr th:each="emp,iterator : ${employeeList}">
+                     <td align="center" width="5%" th:text="${iterator.index+1}"></td>
+                     <td align="center" width="15%">
+                        <a th:href="@{'userdetails?id=' + ${emp.id}}"><span th:utext="${emp.name}"></a>
+                        <input name="name" type="hidden" th:value="${emp.id}" size="10" />
+
+                     </td>
+                     <td align="center" width="10%" th:text="${emp.getSalary().getAvailableLeaves}"></td>
+                     <td align="center" width="10%" th:text="${emp.getSalary().getLeavesTaken()}"></td>
+                     <!--
+                     <td align="center" width="20%" <p> <input type="text" name="leavesTaken"
+                           th:text="${emp.getSalary.getLeavesTaken}" size="10" /></p>
+                     </td> -->
+                     <td align="center" width="15%" th:text="${emp.getSalary().getSalaryForCurrentMonth()}"></td>
+
+                     <td align="center" width="10%" th:text="${emp.getSalary().getTaxSlabPercent()}"></td>
+                     <td align="center" width="10%" th:text="${emp.getSalary().getSalAfterAllDeductions()}"></td>
+
+
+
+
+                     <td align="center" width="10%" th:text="${emp.getSalary().getSalary()}"></td>
+                     <td align="center" width="10%">
+                        <a th:href="@{'updatesalary?id=' + ${emp.id}}" style="float: right;"><span>Update
+                              Salary</span></a>
+                     </td>
+
+                  </tr>
+
+
+                  <tr>
+                     <td></td><td></td><td></td><td></td>
+                     <td align="center">
+                        <p th:text=${totSals} />
+                     </td>
+                     <td align="center">
+                        <p th:text=${totTax} />
+                     </td>
+                     <td align="center">
+                        <p th:text=${totSalAfterTax} />
+                     </td>
+                     <td></td><td></td>
+                  </tr>
+
+
+               </table>
+               <p align="center"><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+            </form>
+
+
+</body>
+
+</html>
+
+
+<script>
+   function postData() {
+      e.preventDefault();
+
+      //alert("in here");
+      var tableData = [];
+      //alert("11-1");
+      $('#tableForm tr').each(function (index, row) {
+         //alert("11");
+         if (index !== 0) { // Skip the header row
+            var rowData = [];
+            //alert("22");
+            $(row).find('td').each(function (index, cell) {
+               rowData.push($(cell).text());
+               //console.log("$(cell).text() is : " +$(cell).text());
+            });
+            tableData.push(rowData);
+         }
+      });
+
+      // Send the data to the Spring Boot application using AJAX
+      $.ajax({
+         type: 'POST',
+         url: '/employee/sal-gen', // Replace with your Spring Boot endpoint
+         data: JSON.stringify(tableData),
+         contentType: 'application/json',
+         success: function (response) {
+            // Handle the response from the server
+            window.location = '/employee/all-sals';
+            console.log(response);
+         },
+         error: function (error) {
+            // Handle any errors
+            console.error(error);
+         }
+      });
+   }
+</script>
