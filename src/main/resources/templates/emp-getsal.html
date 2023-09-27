@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<div th:include="emp-header"></div>
+
+<body>
+   <div th:include="emp-navigation"></div>
+   <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+   <div class="w3-main" style="margin-left:250px">
+      <div class="w3-row w3-padding-64">
+         <div class="w3-twothird w3-container">
+            <h1>Employee Details</h1>
+            <div th:include="header"></div>
+            <table border="3">
+               <tr>
+                  <td align="center"> <strong> S. No </strong></td>
+                  <td align="center"> <strong> Month </strong></td>
+                  <td align="center"> <strong> Year </strong></td>
+                  <td align="center"> <strong> Tot Sal </strong></td>
+                  <td align="center"> <strong> TDS  </strong></td>
+                  <td align="center"> <strong> Salary After TDS  </strong></td>
+                  <!-- td align="center"> <strong> Salary After TDS </strong></td>
+                  <td align="center"> <strong> Actual Salary </strong></td>
+                  <td align="center"> <strong> Action </strong></td> -->
+               </tr>
+            <tr th:each="emp,iterator : ${reqPaymentData}">
+               <td align="center" width="5%" th:text="${iterator.index+1}"></td>
+               <td align="center" width="5%">
+                  <a th:href="@{'userdetails?id=' + ${emp.getEmpId}}"><span th:utext="${emp.monthNumber}"></a>
+                     <td align="center" width="10%" th:text="${emp.yearNumber}"></td>
+
+               </td>
+               <td align="center" width="10%" th:text="${emp.salaryForCurrentMonth}"></td>
+               <td align="center" width="10%" th:text="${emp.getTds}"></td>
+               <td align="center" width="10%" th:text="${emp.salAfterAllDeductions}"></td>
+               
+               
+               
+
+                <!--
+               <td align="center" width="10%" th:text="${emp.getSalary().getLeavesTaken()}"></td>
+              
+               <td align="center" width="20%" <p> <input type="text" name="leavesTaken"
+                     th:text="${emp.getSalary.getLeavesTaken}" size="10" /></p>
+               </td>
+               <td align="center" width="15%" th:text="${emp.getSalary().getSalaryForCurrentMonth()}"></td>
+
+               <td align="center" width="10%" th:text="${emp.getSalary().getTaxSlabPercent()}"></td>
+               <td align="center" width="10%" th:text="${emp.getSalary().getSalAfterAllDeductions()}"></td>
+
+
+
+
+               <td align="center" width="10%" th:text="${emp.getSalary().getSalary()}"></td>
+               <td align="center" width="10%">
+                  <a th:href="@{'updatesalary?id=' + ${emp.id}}" style="float: right;"><span>Update
+                        Salary</span></a>
+               </td> -->
+
+            </tr>
+               <p></p>
+            </form>
+         </div>
+      </div>
+      <!-- END MAIN -->
+   </div>
+</body>
+<div th:include="emp-footer"></div>
+
+</html>
