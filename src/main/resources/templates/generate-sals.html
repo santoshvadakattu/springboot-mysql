@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<div th:include="emp-header"></div>
+
+<body>
+   <div th:include="emp-navigation"></div>
+   <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+   <div class="w3-main" style="margin-left:250px">
+      <div class="w3-row w3-padding-64">
+         <div class="w3-twothird w3-container">
+            <h1>Employee Leave Details</h1>
+            <div th:include="header"></div>
+            <form action="#" th:action="@{/employee/generate-sals}" th:object="${employee}" enctype="multipart/form-data"
+               method="post">
+               <hr>
+               Year
+               <select name="year">
+                  <option value="2023">2023</option>
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
+                  <option value="2020">2020</option>
+               </select>
+
+               Month
+               <select name="month">
+                  <option value="1">Jan</option>
+                  <option value="2">Feb</option>
+                  <option value="3">Mar</option>
+                  <option value="4">Apr</option>
+                  <option value="5">May</option>
+                  <option value="6">June</option>
+                  <option value="7">Jul</option>
+                  <option value="8">Aug</option>
+                  <option value="9">Sep</option>
+                  <option value="10">Oct</option>
+                  <option value="11">Nov</option>
+                  <option value="12">Dec</option>
+
+               </select>
+
+               
+
+
+            
+
+
+
+               <p align="center"><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+            </form>
+         </div>
+      </div>
+      <!-- END MAIN -->
+   </div>
+</body>
+<div th:include="emp-footer"></div>
+
+</html>

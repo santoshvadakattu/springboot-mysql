@@ -29,18 +29,23 @@
                   </tr>
 
                   <tr th:each="emp,iterator : ${reqLeavesData}">
-                      <!-- <span th:if="${emp.getNumOfLeavesTakenInAMonth != 0}"> -->
-                        <td align="center" width="8%" th:text="${iterator.index+1}"></td>
-                        <td align="center" width="30%" th:text="${emp.leaveFrom}"></td>
-                        <td align="center" width="30%" th:text="${emp.leaveTo}"></td>
+                     <!-- <span th:if="${emp.getNumOfLeavesTakenInAMonth != 0}"> -->
+                     <td align="center" width="8%" th:text="${iterator.index+1}"></td>
+                     <td align="center" width="30%" th:text="${emp.leaveFrom}"></td>
+                     <td align="center" width="30%" th:text="${emp.leaveTo}"></td>
+                     <span th:if="${emp.getLeavesCount <= 0 } ">
+                        <td align="center" width="20%" th:text="${emp.getLeavesCount}" style="background-color:red"></td>
+                     </span>
+                     <span th:if="${emp.getLeavesCount != 0}">
                         <td align="center" width="20%" th:text="${emp.getLeavesCount}"></td>
-                          <!-- </span> -->
-                  </tr>
-                  </table>
+                     </span>
 
-               <p>Leave From  : <input type="date" name="leaveFrom" size="100" /></p>
-               <p>Leave To  : <input type="date" name="leaveTo" size="100" /></p>
-               
+                  </tr>
+               </table>
+
+               <p>Leave From : <input type="date" name="leaveFrom" size="100" /></p>
+               <p>Leave To : <input type="date" name="leaveTo" size="100" /></p>
+
                <p>Available Leaves : <input type="text" name="availableLeaves"
                      th:value="${empDetails.getSalary.getAvailableLeaves}" size="100" /></p>
                <p>Leaves Taken : <input type="text" name="leavesTaken" th:value="${empDetails.getSalary.getLeavesTaken}"
@@ -52,7 +57,7 @@
 
 
 
-                  <p align="center"><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+               <p align="center"><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
             </form>
          </div>
       </div>

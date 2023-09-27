@@ -1,5 +1,7 @@
 package com.example.accessingdatamysql;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +15,8 @@ public class LeavesTable {
 	private long yearNumber;
 	private long monthNumber;
 	private long empId;
+	private Date leaveFromDate;
+	private Date leaveToDate;
 	private String leaveFrom;
 	private String leaveTo;
 	private long leavesCount;
@@ -20,6 +24,22 @@ public class LeavesTable {
 	private long numOfTotDays;
 	private long numOfDaysToBePaid;
 	private long totHolidaysInMonth;
+
+	public void setLeaveToDate(Date leaveToDate) {
+		this.leaveToDate = leaveToDate;
+	}
+
+	public Date getLeaveFromDate() {
+		return leaveFromDate;
+	}
+
+	public void setLeaveFromDate(Date leaveFromDate) {
+		this.leaveFromDate = leaveFromDate;
+	}
+
+	public Date getLeaveToDate() {
+		return leaveToDate;
+	}
 
 	public long getId() {
 		return id;
