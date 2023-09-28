@@ -121,6 +121,16 @@ public class EmployeeController {
 		model.addAttribute("employee", new Employee());
 		return "empcreate";
 	}
+	
+	@GetMapping(path = "/updateprofile")
+	public String updateProfile(@RequestParam long id, Model model) {
+		System.out.println("hereeeeeee");
+		model.addAttribute("user", new Employee());
+		Optional<Employee> empData = employeeRepository.findById(id);
+		Employee currentEmployee  = empData.get();
+		model.addAttribute("usersDetails", currentEmployee);
+		return "updateprofile";
+	}
 
 	@GetMapping(path = "/emplist")
 	public String listUsers(Model model) {
