@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<div th:include="emp-header"></div>
+
+<body>
+   <div th:include="emp-navigation"></div>
+   <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+   <div class="w3-main" style="margin-left:250px">
+      <div class="w3-row w3-padding-64">
+         <div class="w3-twothird w3-container">
+            <h1>Employee Details</h1>
+            <div th:include="header"></div>
+            <form action="#" th:action="@{/employee/updatesalary}" th:object="${employee}" enctype="multipart/form-data"
+               method="post">
+               <section>
+                  <h2> Personal Details </h2>
+                  <hr>
+                  <p>ID : <input type="text" th:value="${empDetails.id}" disabled size="100" /></p>
+                  <p><input type="hidden" th:field="${empDetails.id}" size="100" /></p>
+                  <p>First Name : <input type="text" th:field="${empDetails.name}" size="100" /></p>
+                  <p>Available Leaves : <input type="text" name="availableLeaves"
+                        th:value="${empDetails.getSalary.getAvailableLeaves}" size="100" /></p>
+                  <p>Leaves Taken : <input type="text" name="leavesTaken"
+                        th:value="${empDetails.getSalary.getLeavesTaken}" size="100" /></p>
+                  <p>Salary : <input type="text" name="salary" th:value="${empDetails.getSalary.getSalary}" size="100"
+                        disabled /></p>
+                  <p>Tax Slab : <input type="text" name="taxSlabPercent" th:value="${empDetails.getSalary.getTaxSlabPercent}"
+                        size="100" /></p>
+                  <p>Year name : <input type="text" name="yearNum" size="100" />
+                     <p>Month name : <input type="text" name="monthNum" size="100" />
+
+
+                  <p>Department name : <input type="text" name="depName" th:value="${empDetails.getDepartment.getName}"
+                        size="100" />
+                  </p>
+
+                  <!-- 
+                  <p>Street : <input type="text" th:value="${empDetails.getAddress.getStreet}" size="100" /></p>
+                  <p>City : <input type="text" th:value="${empDetails.getAddress.getCity}" size="100" /></p>
+                  <p>State : <input type="text" th:value="${empDetails.getAddress.getState}" size="100" /></p>
+                     -->
+
+
+               </section>
+               <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+            </form>
+         </div>
+      </div>
+      <!-- END MAIN -->
+   </div>
+</body>
+<div th:include="emp-footer"></div>
+
+</html>
