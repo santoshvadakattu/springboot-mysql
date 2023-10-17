@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<div th:include="emp-header"></div>
+
+
+<body>
+
+   <!-- Navbar -->
+
+   <div th:include="emp-navigation"></div>
+
+ 
+
+   <!-- Overlay effect when opening sidebar on small screens -->
+
+   <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu"
+
+      id="myOverlay"></div>
+
+   <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+
+   <div class="w3-main" style="margin-left:250px">
+
+      <div class="w3-row w3-padding-64">
+
+         <div class="w3-twothird w3-container">
+            <span th:if="${reqHtml != ''}">
+
+               <p th:text="${reqHtml}"></p>
+            </span>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+       /* Adjust the calendar container size and font size */
+        #calendar-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        #calendar {
+            width: 500px;
+            height: 400px;
+            max-width: 100%;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        /* Adjust the event title font size */
+        .fc-title {
+            font-size: 12px;
+        }
+
+        /* Style for the month and year dropdowns */
+        .calendar-controls {
+        
+        
+            display: flex;
+            justify-content: space-between;-
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .calendar-controls select {
+            padding: 5px;
+            font-size: 12px;
+        }
+
+        /* Style for the year dropdown */
+        #year {
+            margin-left: 10px; /* Add margin to separate it from the month dropdown */
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.0/pikaday.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.8.0/css/pikaday.min.css">
+    
+</head>
+<body>
+    <!-- Month and year selection dropdowns -->
+    <div class="calendar-controls">
+        <select id="month">
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8">September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+        </select>
+        
+        <select id="year">
+            
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <!-- Add more years here -->
+        </select>
+    </div>
+  
+    
+    <!-- Calendar will be rendered here -->
+    <div id="calendar"></div>
+
+    <!-- List of holidays -->
+    <ul id="holiday-list">
+        <!-- Add more holidays here -->
+    </ul>
+    <br>
+     <br>
+    <!-- "APPLY LEAVE" heading -->
+<div class="apply-leave">
+    <h3>APPLY LEAVE</h3>
+        <label for="from-date">From:</label>
+        <input type="text" id="from-date">
+    </div>
+      <br>
+     
+    <div>
+        <label for="to-date">To:</label>
+        <input type="text" id="to-date">
+    </div>
+      <br>
+     
+    <button id="apply-leave-button">Apply Leave</button>
+    <br>
+    <p>Total no of leaves in an year:<span id="leave-balance">22</span></p>
+</div>
+    
+    
+
+    <script>
+
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var holidayList = document.getElementById('holiday-list');
+            var monthSelect = document.getElementById('month');
+            var yearSelect = document.getElementById('year');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                // Calendar configuration options here
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: '',
+                    center: 'title',
+                    right: ''
+                },
+                events: [], // Events will be dynamically loaded based on month and year
+                eventClick: function (info) {
+                    // Handle event click here, if needed
+                }
+            });
+
+            calendar.render();
+
+            // Populate the calendar with holidays
+            function populateCalendar() {
+                var selectedMonth = monthSelect.value;
+                var selectedYear = yearSelect.value;
+
+                // Clear the calendar and holiday list
+                calendar.removeAllEvents();
+                holidayList.innerHTML = '';
+
+                
+                var holidays = [
+                   { title: "New Year's Day", date: "2023-01-01" },
+    { title: "Republic Day", date: "2023-01-26" },
+    { title: "Valentine's Day", date: "2023-02-14" },
+    { title: "Good Friday", date: "2023-04-07" },
+    { title: "Easter Sunday", date: "2023-04-09" },
+    { title: "Buddha Purnima", date: "2023-05-10" },
+    { title: "Ramzan (Eid al-Fitr)", date: "2023-05-30" },
+    { title: "Labor Day", date: "2023-05-01" },
+    { title: "Memorial Day", date: "2023-05-29" },
+    { title: "Father's Day", date: "2023-06-18" },
+    { title: "Raksha Bandhan", date: "2023-08-30" },
+    { title: "Christmas Day", date: "2023-12-25" },
+    { title: "New Year's Eve", date: "2023-12-31" },
+    // Hindu Festivals
+    { title: "Makar Sankranti", date: "2023-01-14" },
+    { title: "Pongal", date: "2023-01-15" },
+    { title: "Vasant Panchami", date: "2023-01-29" },
+    { title: "Maha Shivaratri", date: "2023-02-25" },
+    { title: "Holi", date: "2023-03-10" },
+    { title: "Rama Navami", date: "2023-04-01" },
+    { title: "Hanuman Jayanti", date: "2023-04-07" },
+    { title: "Akshaya Tritiya", date: "2023-04-18" },
+    { title: "Rath Yatra", date: "2023-07-05" },
+    { title: "Nag Panchami", date: "2023-08-01" },
+    { title: "Krishna Janmashtami", date: "2023-09-07" },
+    { title: "Ganesh Chaturthi", date: "2023-09-18" },
+    { title: "Dussehra", date: "2023-10-24" },
+    { title: "Diwali", date: "2023-11-12" },
+    { title: "Guru Nanak Jayanti", date: "2023-11-28" },
+    { title: "Muharram", date: "2023-12-22" },
+    { title: "Gandhi Jayanti", date: "2023-10-02" },
+    
+    
+    
+    
+    // Add more festivals and public holidays here
+                ];
+
+                holidays.forEach(function (holiday) {  
+                    var holidayDate = new Date(holiday.date);
+                    var holidayMonth = holidayDate.getMonth();
+                    var holidayYear = holidayDate.getFullYear();
+
+                    if (holidayMonth == selectedMonth && holidayYear == selectedYear) {
+                        holidayList.innerHTML += `<li><strong>${holiday.title}:</strong> ${holiday.date}</li>`;
+                        calendar.addEvent({
+                            title: holiday.title,
+                            start: holiday.date
+                        });
+                    }
+                });
+
+                // Change the displayed month and year
+                calendar.gotoDate(selectedYear + '-' + (parseInt(selectedMonth) + 1).toString().padStart(2, '0') + '-01');
+            }
+
+            // Listen for changes in month and year selection
+            monthSelect.addEventListener('change', populateCalendar);
+            yearSelect.addEventListener('change', populateCalendar);
+
+            // Initial population of calendar
+            populateCalendar();
+        });
+    </script>
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // ... (your existing code)
+
+        // Initialize date pickers for "From" and "To" date fields
+        var fromDatePicker = new Pikaday({ field: document.getElementById('from-date') });
+        var toDatePicker = new Pikaday({ field: document.getElementById('to-date') });
+
+        // Define the festival holidays (add your holidays here)
+        var festivalHolidays = [
+            "2023-01-01",
+            "2023-01-26",
+            "2023-02-14",
+            "2023-04-07",
+            "2023-04-09",
+            "2023-05-10",
+            "2023-05-30",
+            "2023-05-01",
+            "2023-05-29",
+            "2023-06-18",
+            "2023-08-30",
+            "2023-12-25",
+            "2023-12-31",
+            "2023-01-14",
+            "2023-01-15",
+            "2023-01-29",
+            "2023-02-25",
+            "2023-03-10",
+            "2023-04-01",
+            "2023-04-07",
+            "2023-04-18",
+            "2023-07-05",
+            "2023-08-01",
+            "2023-09-07",
+            "2023-09-18",
+            "2023-10-24",
+            "2023-11-12",
+            "2023-11-28",
+            "2023-12-22",
+            "2023-10-02"
+            // Add more holiday dates here
+        ];
+
+        // Handle the "Apply Leave" button click event
+        document.getElementById('apply-leave-button').addEventListener('click', function () {
+            var fromDate = fromDatePicker.getDate();
+            var toDate = toDatePicker.getDate();
+
+            var totalLeaveDays = calculateLeaveDays(fromDate, toDate);
+
+            alert('Leave applied from ' + fromDate.toDateString() + ' to ' + toDate.toDateString() + '\nTotal Leave Days: ' + totalLeaveDays);
+            // You can perform further actions here, such as sending the leave request to the server.
+        });
+
+        function calculateLeaveDays(fromDate, toDate) {
+            var leaveDays = 0;
+            var currentDate = new Date(fromDate);
+            
+            var endDate = new Date(toDate);
+    endDate.setHours(23, 59, 59, 999);
+
+            while (currentDate <= endDate) {
+                // Check if the current day is not a Saturday (6) or Sunday (0)
+                if (currentDate.getDay() !== 6 && currentDate.getDay() !== 0) {
+                    // Check if the current day is not a festival holiday
+                    var formattedDate = currentDate.toISOString().split('T')[0];
+                     if (!isFestivalHoliday(formattedDate)) {
+                        leaveDays++;
+                    }
+                }
+                // Increment the date by one day
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            return leaveDays;
+        }
+
+        function isFestivalHoliday(date) {
+            // Check if the date is in the festivalHolidays array
+            return festivalHolidays.includes(date);
+        }
+    });
+    document.getElementById('apply-leave-button').addEventListener('click', function () {
+    var fromDate = fromDatePicker.getDate();
+    var toDate = toDatePicker.getDate();
+
+    var totalLeaveDays = calculateLeaveDays(fromDate, toDate);
+
+    alert('Leave applied from ' + fromDate.toDateString() + ' to ' + toDate.toDateString() + '\nTotal Leave Days: ' + totalLeaveDays);
+    
+    // You can perform further actions here, such as sending the leave request to the server.
+    
+    // Add the redirection code here
+    window.location.href = '/notfound.html'; // Replace with your actual "not found" page URL
+});
+    
+</script>
+
+
+</script>
+
+</body>
+</html>

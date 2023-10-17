@@ -19,7 +19,16 @@ public class Registration {
 	private Long id;
 	
     private String firstName;
-    private String surname;
+    public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public void setZipCode(Long zipCode) {
+		this.zipCode = zipCode;
+	}
+	private String surname;
     private String sex;
     private String email;
     private String primaryMobile;

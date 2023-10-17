@@ -56,6 +56,17 @@ public class EmployeeController {
 	@Autowired
 	private LeavesRepository leavesRepository;
 
+	@Autowired
+	private RegistrationRepository registrationRepository;
+	
+	@Autowired
+	private Salaries1Repository salaries1Repository;
+	
+	@Autowired
+	private HolidaysRepository holidaysRepository;
+	
+	
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date doj;
 
@@ -121,6 +132,187 @@ public class EmployeeController {
 		model.addAttribute("employee", new Employee());
 		return "empcreate";
 	}
+	@GetMapping(path = "/registration")
+	public String registrationForm(Model model) {
+		System.out.println("inside get create employee method");
+		model.addAttribute("employee", new Employee());
+		return "registration1";
+	}
+     	
+	
+	@PostMapping("/registration")
+	public String addNewEmployee(@ModelAttribute Registration registrationForm, Model model) {
+	    // Create a new Employee object and set its attributes based on the registration form data
+	    Registration emp = new Registration();
+	    //System.out.println("registrationForm.getId() is : "+registrationForm.getId());
+	    emp.setId(registrationForm.getId());
+	    emp.setFirstName(registrationForm.getFirstName());
+	    //System.out.println("registrationForm.getFirstName() is : "+registrationForm.getFirstName());
+	    emp.setSurname(registrationForm.getSurname());
+	    emp.setPrimaryMobile(registrationForm.getPrimaryMobile());
+	    emp.setEmail(registrationForm.getEmail());
+	    emp.setDoj(registrationForm.getDoj());
+	    emp.setProjectName(registrationForm.getProjectName());
+	    emp.setProjectAllocationDate(registrationForm.getProjectAllocationDate());
+	    emp.setWorkAllocationDays(registrationForm.getWorkAllocationDays());
+	    emp.setMonthlySalary(registrationForm.getMonthlySalary());
+        emp.setWorkType(registrationForm.getWorkType());
+
+
+	    // Save the new employee to the database
+	    registrationRepository.save(emp);
+	    // Redirect to the employee info tab or list page
+	    return "employeeinfo"; // Replace with the appropriate URL
+	}
+    	
+	
+	
+	@GetMapping("/empinfo")
+	public String displayEmployeeInfo(Model model) {
+	    // Fetch all registration data from the database
+	    List<Registration> registrations = registrationRepository.findAll();
+	    // Pass the registration data to the Thymeleaf template
+	    model.addAttribute("registrations", registrations);
+	    return "employeeinfo"; // Make sure "employeeinfo" is the correct template name
+	}
+	
+	
+	
+	@GetMapping(path = "/updateemployee") 
+	public String updateEmployee(@RequestParam long id, Model model) {
+		System.out.println("inside the update salary controller method");
+		model.addAttribute("registration", new Registration());
+		Optional<Registration> empData = registrationRepository.findById(id);
+		Registration currentEmp = empData.get();
+		model.addAttribute("empDetails", currentEmp);
+		System.out.println("First name is : " + currentEmp.getFirstName());
+		model.addAttribute("depDetails", currentEmp.getSurname());
+		return "updateemployee";
+	}
+
+	
+//	@GetMapping("/updateemployee")
+//	public String getEmployeeDetailsForUpdate(@RequestParam Long employeeId, Model model) {
+//	    // Retrieve the employee details by ID
+//	    Optional<Registration> optionalEmployee = registrationRepository.findById(employeeId);
+//
+//	    if (optionalEmployee.isPresent()) {
+//	        Registration employee = optionalEmployee.get();
+//	        model.addAttribute("employee", employee);
+//	        return "updateemployee"; // Define your update employee details template
+//	    } else {
+//	        // Handle the case where the employee is not found, you can redirect or show an error message
+//	        return "error-page"; // Define an error page in your templates
+//	    }
+//	}
+
+	
+	
+
+//	@GetMapping("/update/{id}")
+//    public String updateEmployee(@PathVariable("id") Long id, Model model) {
+//        // Retrieve the employee record from the database by ID
+//        Optional<Registration> employee = registrationRepository.findById(id);
+//        if (employee.isPresent()) {
+//            model.addAttribute("employee", employee.get());
+//            return "updateemployee"; // Create a new Thymeleaf template for updating employee details
+//        } else {
+//            return "notfound"; // Create a template for displaying a "not found" message
+//        }
+//    }
+//
+//
+//    // Step 2: Add a method to handle the delete operation
+//    @GetMapping("/delete/{id}")
+//    public String deleteEmployee(@PathVariable("id") Long id) {
+//        // Delete the employee record from the database by ID
+//        registrationRepository.deleteById(id);
+//        return "redirect:/employeeinfo"; // Redirect to the employee info page after deletion
+//    }
+//    
+//    
+//    @PostMapping("/save-updated-employee")
+//    public String saveUpdatedEmployee(@ModelAttribute Registration updatedEmployee) {
+//        // Save the updated employee details to the database
+//        registrationRepository.save(updatedEmployee);
+//        return "redirect:/employeeinfo"; // Redirect to the employee info page after updating
+//    }
+    
+    
+	  @GetMapping("/employeeleave")
+	    public String listLeaves(Model model) {
+	        Iterable<Holidays> leaveHolidays = holidaysRepository.findAll();
+	        model.addAttribute("leaveHolidays", leaveHolidays);
+
+	        return "holidays"; // You need to create a corresponding HTML template to display the leave dates.
+	    }
+	  
+	  @PostMapping("/employeeleave")
+	    public String submitLeave(@ModelAttribute Holidays leave, Model model) {
+	        // Here, 'Holidays' should be a class that represents the leave data.
+	        // Save the leave data to your repository.
+	        holidaysRepository.save(leave);
+
+	        return "notfound"; // Redirect to a page that lists leave data.
+	    }
+	  
+	  
+	  @GetMapping(path = "/salaries1")
+
+		public String salariesForm(Model model) {
+			System.out.println("inside get create employee method");
+
+			model.addAttribute("employee", new Employee());
+			return "salaries1";
+
+		}
+
+		
+
+	    @PostMapping(path="/salaries1")
+
+	    public String submitSalaryForm(@ModelAttribute Salaries1 salaryForm, Model model) {
+
+	        // Create a new Salary object and set its attributes based on the form data
+	        Salaries1 employee = new Salaries1();
+	        employee.setName(salaryForm.getName());
+	        employee.setDesignation(salaryForm.getDesignation());
+	        employee.setDoj(salaryForm.getDoj());
+	        employee.setPayperiod(salaryForm.getPayperiod());
+	        employee.setPaydate(salaryForm.getPaydate());
+	        employee.setPfnumber(salaryForm.getPfnumber());
+	        employee.setBankaccountnumber(salaryForm.getBankaccountnumber());
+
+	       // Save the new salary to the database
+	        salaries1Repository.save(employee);
+
+	 
+
+	        // Redirect to a confirmation page or the "salaries1" page
+
+	        return "payslips"; // Replace with the appropriate URL
+	    }
+
+	    @GetMapping("/payslips")
+
+	    public String displayPayslips(Model model) {
+
+	        // Fetch all payslip data from the database or your data source
+
+	        List<Salaries1> salaries1s = salaries1Repository.findAll(); // Implement this method to fetch payslips
+
+	 
+
+	        // Pass the payslip data to the Thymeleaf template
+
+	        model.addAttribute("salaries1", salaries1s);
+
+	 
+
+	        return "payslips"; // Ensure that "payslips" is the correct template name
+
+	    }
+ 
 	
 	@GetMapping(path = "/updateprofile")
 	public String updateProfile(@RequestParam long id, Model model) {
