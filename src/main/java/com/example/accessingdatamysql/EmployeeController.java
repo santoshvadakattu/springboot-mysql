@@ -49,6 +49,13 @@ public class EmployeeController {
 
 	@Autowired
 	private SalaryRepository salaryRepository;
+	
+	@Autowired
+	private Salaries1Repository salaries1Repository;
+	
+	@Autowired
+	private EmployeePortalRepository employeeportalRepository;
+	
 
 	@Autowired
 	private PaymentsRepository paymentRepository;
@@ -121,6 +128,145 @@ public class EmployeeController {
 		model.addAttribute("employee", new Employee());
 		return "empcreate";
 	}
+	
+	@GetMapping(path = "/employeeportal")
+	public String employeedetails(Model model) {
+		System.out.println("inside get create employee method");
+		model.addAttribute("employee", new Employee());
+		return "employeeportal";
+	}
+	
+	@PostMapping(path="/employeeportal")
+	public String addNewEmployee(@ModelAttribute EmployeePortal employeeportalForm, Model model) {
+
+	    // Create a new Employee object and set its attributes based on the registration form data
+
+	    EmployeePortal employee = new EmployeePortal();
+	    employee.setFirstname(employeeportalForm.getFirstname() + " , " + employeeportalForm.getSurname());
+	    employee.setPrimarymobileno(employeeportalForm.getPrimarymobileno() + " , " + employeeportalForm.getSecondarymobileno());
+	    employee.setEmailid(employeeportalForm.getEmailid());
+	    employee.setSex(employeeportalForm.getSex());
+	    employee.setAadharno(employeeportalForm.getAadharno());
+	    employee.setAddress(employeeportalForm.getAddress());
+	    employee.setLandmark(employeeportalForm.getLandmark());
+	    employee.setZipcode(employeeportalForm.getZipcode());
+	    employee.setDoj(employeeportalForm.getDoj());
+	    employee.setProjectname(employeeportalForm.getProjectname());
+	    employee.setProjectallocationdate(employeeportalForm.getProjectallocationdate());
+	    employee.setWorktype(employeeportalForm.getWorktype());
+	    employee.setMonthlysalary(employeeportalForm.getMonthlysalary());
+	    employee.setWorkallocationdays(employeeportalForm.getWorkallocationdays());
+
+	    // Save the new employee to the database
+
+	    employeeportalRepository.save(employee);
+
+	    // Redirect to the employee info tab or list page
+
+	    return "employeeinformation"; // Replace with the appropriate URL
+
+	}
+	
+	
+	@GetMapping("/employeeinformation")
+
+	public String displayEmployeeInfo(Model model) {
+
+	    // Fetch all employeeportal data from the database
+
+	    List<EmployeePortal> employeeportals = employeeportalRepository.findAll();
+
+	    // Pass the employeeportal data to the Thymeleaf template
+
+	    model.addAttribute("employeeportals", employeeportals);
+
+	    return "employeeinformation"; // Make sure "employeeinformation" is the correct template name
+
+	}
+	
+	@GetMapping(path = "/salaries1")
+
+	public String salariesForm(Model model) {
+
+		System.out.println("inside get create employee method");
+
+		model.addAttribute("employee", new Employee());
+
+		return "salaries1";
+
+	}
+
+	
+
+    @PostMapping(path="/salaries1")
+
+    public String submitSalaryForm(@ModelAttribute Salaries1 salaryForm, Model model) {
+
+        // Create a new Salary object and set its attributes based on the form data
+
+ 
+
+        Salaries1 employee = new Salaries1();
+
+        employee.setName(salaryForm.getName());
+
+        employee.setDesignation(salaryForm.getDesignation());
+
+        employee.setDoj(salaryForm.getDoj());
+
+        employee.setPayperiod(salaryForm.getPayperiod());
+
+        employee.setPaydate(salaryForm.getPaydate());
+
+        employee.setPfnumber(salaryForm.getPfnumber());
+
+        employee.setBankaccountnumber(salaryForm.getBankaccountnumber());
+
+ 
+
+        // Save the new salary to the database
+
+        salaries1Repository.save(employee);
+
+ 
+
+        // Redirect to a confirmation page or the "salaries1" page
+
+        return "payslips"; // Replace with the appropriate URL
+
+    }
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+    @GetMapping("/payslips")
+
+    public String displayPayslips(Model model) {
+
+        // Fetch all payslip data from the database or your data source
+
+        List<Salaries1> salaries1s = salaries1Repository.findAll(); // Implement this method to fetch payslips
+
+ 
+
+        // Pass the payslip data to the Thymeleaf template
+
+        model.addAttribute("salaries1", salaries1s);
+
+ 
+
+        return "payslips"; // Ensure that "payslips" is the correct template name
+
+    }
 	
 	@GetMapping(path = "/updateprofile")
 	public String updateProfile(@RequestParam long id, Model model) {

@@ -1,18 +1,20 @@
 package com.example.accessingdatamysql;
- 
+
 import java.time.LocalDate;
+
+ 
 
 import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
- 
+
 @Entity
 public class EmployeePortal {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
+
 	private int id;
 	private String firstname;
 	private String surname;
@@ -24,14 +26,14 @@ public class EmployeePortal {
 	private String landmark;
 	private long zipcode;
 	private LocalDate doj;
-	private long aadharno;
+	private  long aadharno;
 	private String projectname;
 	private LocalDate projectallocationdate;
 	private long monthlysalary;
 	private int workallocationdays;
 	private List<String> worktype;
-	
-	
+
+
 	public int getId() {
 		return id;
 	}
@@ -111,6 +113,8 @@ public class EmployeePortal {
 		this.projectname = projectname;
 	}
 
+ 
+
 	public LocalDate getProjectallocationdate() {
 		return projectallocationdate;
 	}
@@ -136,14 +140,3 @@ public class EmployeePortal {
 		this.worktype = worktype;
 	}
 }
-	
-	
-
- 
-
-   
-
-
-
- 
-
