@@ -56,6 +56,8 @@ public class EmployeeController {
 	@Autowired
 	private EmployeePortalRepository employeeportalRepository;
 	
+	@Autowired
+	private HolidaysRepository holidaysRepository;
 
 	@Autowired
 	private PaymentsRepository paymentRepository;
@@ -236,20 +238,39 @@ public class EmployeeController {
 //    public String deleteEmployeeProfile(@RequestParam Long id) {
 //        // Implement the code to delete the employee with the given ID
 //        // You can use a service or repository to perform the deletion
-//        employeeService.deleteEmployeeById(id); // Replace with the actual method
+//        employee.deleteEmployeeById(id); // Replace with the actual method
 //        return "redirect:/employeeinformation"; // Redirect back to the employee information page
 //    }
 
+
+
 	
-	@GetMapping(path = "/updateprofile")
-	public String updateProfile(@RequestParam long id, Model model) {
-		System.out.println("hereeeeeee");
-		model.addAttribute("user", new Employee());
-		Optional<Employee> empData = employeeRepository.findById(id);
-		Employee currentEmployee  = empData.get();
-		model.addAttribute("usersDetails", currentEmployee);
-		return "updateprofile";
+	@GetMapping(path = "/updateemployee")
+
+	public String updateEmployee(@RequestParam long id, Model model) {
+
+		System.out.println("inside the update salary controller method");
+
+		model.addAttribute("employeeportal", new EmployeePortal());
+
+		Optional<EmployeePortal> empData = employeeportalRepository.findById(id);
+
+		EmployeePortal currentEmp = empData.get();
+
+		model.addAttribute("empDetails", currentEmp);
+
+		System.out.println("First name is : " + currentEmp.getFirstname());
+
+		model.addAttribute("depDetails", currentEmp.getSurname());
+
+		return "updateemployee";
+
 	}
+
+
+
+
+
 
 	@GetMapping(path = "/emplist")
 	public String listUsers(Model model) {
@@ -265,6 +286,17 @@ public class EmployeeController {
 		ArrayList<Employee> jsonObj = (ArrayList<Employee>) employeeRepository.findAll();
 		model.addAttribute("employeeList", jsonObj);
 		return "all-sals";
+	}
+	
+	@GetMapping(path = "/updateprofile")
+	public String updateProfile(@RequestParam long id, Model model) {
+		System.out.println("hereeeeeee");
+		model.addAttribute("user", new Employee());
+		Optional<Employee> empData = employeeRepository.findById(id);
+		Employee currentEmployee  = empData.get();
+		model.addAttribute("usersDetails", currentEmployee);
+		return "updateprofile";
+
 	}
 
 	@GetMapping(path = "/update-pdf")
@@ -493,147 +525,241 @@ public class EmployeeController {
 		return "emp-getsal";
 	}
 
+
+
+	@GetMapping("/employeeleave")
+
+		    public String listLeaves(Model model) {
+
+		        Iterable<Holidays> leaveHolidays = holidaysRepository.findAll();
+
+		        model.addAttribute("leaveHolidays", leaveHolidays);
+
+	 
+
+		        return "holidays"; // You need to create a corresponding HTML template to display the leave dates.
+
+		    }
+
+		  
+
+		  @PostMapping("/employeeleave")
+
+		    public String submitLeave(@ModelAttribute Holidays leave, Model model) {
+
+		        // Here, 'Holidays' should be a class that represents the leave data.
+
+		        // Save the leave data to your repository.
+
+		        holidaysRepository.save(leave);
+
+	 
+
+		        return "notfound"; // Redirect to a page that lists leave data.
+
+		    }
+		  
+		  
+
 	@GetMapping(path = "/emp-leave")
-	public String empLeave(@RequestParam long id, Model model) {
-		Optional<Employee> empData = employeeRepository.findById(id);
-		List<LeavesTable> leavesData = leavesRepository.findAll();
-		List<LeavesTable> reqLeavesData = new ArrayList<LeavesTable>();
-		for (Iterator<LeavesTable> iterator = leavesData.iterator(); iterator.hasNext();) {
-			LeavesTable leavesTable = (LeavesTable) iterator.next();
-			// System.out.println("paymentsTable.getEmpId() is : " +
-			// leavesTable.getEmpId());
-			if (leavesTable.getEmpId() == id)
-				reqLeavesData.add(leavesTable);
-		}
-		Employee currentEmp = empData.get();
-		model.addAttribute("empDetails", currentEmp);
-		model.addAttribute("reqLeavesData", reqLeavesData);
-		getLeavesCountPerMonth(reqLeavesData, 12);
-		return "emp-leave";
-	}
 
-	private int getLeavesCountPerMonth(List<LeavesTable> reqLeavesData, int monthNum) {
-		int totLeavesInMonth = 0;
+		public String empLeave(@RequestParam long id, Model model) {
 
-		for (Iterator<LeavesTable> iterator = reqLeavesData.iterator(); iterator.hasNext();) {
-			LeavesTable leavesTable = (LeavesTable) iterator.next();
-			// System.out.println("for the id : " + leavesTable.getEmpId());
-			String leaveFrom = leavesTable.getLeaveFrom();
-			String leaveTo = leavesTable.getLeaveTo();
-			int monthLF = Integer.parseInt((leaveFrom).split("-")[1]);
-			int monthLT = Integer.parseInt((leaveTo).split("-")[1]);
-			if (monthLF == monthNum || monthLT == monthNum) {
-				System.out.println("monthLF : " + monthLF);
-				System.out.println("1111 : totLeavesInMonth " + totLeavesInMonth);
-				System.out.println("leaveFrom beofre : " + leaveFrom);
-				System.out.println("leaveTo beofre : " + leaveTo);
-				if (monthLF == monthNum && monthLT > monthNum) {
-					Calendar leaveFromCalObj = getCalendarObj(leaveFrom);
-					int leaveToTemp = leaveFromCalObj.getActualMaximum(Calendar.DAY_OF_MONTH);
-					String leaveFromDate = leaveFrom.split("-")[2];
-					leaveTo = leaveFrom.replace(leaveFromDate, Integer.toString(leaveToTemp));
-				} else if (monthLT == monthNum && monthLF < monthNum) {
-					String leaveFromDateTemp = "1";
-					String leaveFromMonth = leaveFrom.split("-")[1];
-					String leaveFromDate = leaveFrom.split("-")[2];
-					leaveFrom = leaveFrom.replace(leaveFromMonth, Integer.toString(monthLT)).replace(leaveFromDate,
-							leaveFromDateTemp);
-				}
-				totLeavesInMonth = totLeavesInMonth + getLeavesCount(leaveFrom, leaveTo);
-				System.out.println("totLeavesInMonth " + totLeavesInMonth);
+			Optional<Employee> empData = employeeRepository.findById(id);
+
+			List<LeavesTable> leavesData = leavesRepository.findAll();
+
+			List<LeavesTable> reqLeavesData = new ArrayList<LeavesTable>();
+
+			for (Iterator<LeavesTable> iterator = leavesData.iterator(); iterator.hasNext();) {
+
+				LeavesTable leavesTable = (LeavesTable) iterator.next();
+
+				// System.out.println("paymentsTable.getEmpId() is : " +
+
+				// leavesTable.getEmpId());
+
+				if (leavesTable.getEmpId() == id)
+
+					reqLeavesData.add(leavesTable);
+
 			}
 
+			Employee currentEmp = empData.get();
+
+			model.addAttribute("empDetails", currentEmp);
+
+			model.addAttribute("reqLeavesData", reqLeavesData);
+
+			getLeavesCountPerMonth(reqLeavesData, 12);
+
+			return "emp-leave";
+
 		}
-		System.out.println("Tot Leaves in the month : " + monthNum + " is :::::: " + totLeavesInMonth);
-		return totLeavesInMonth;
 
-	}
+	 
 
-	@PostMapping(path = "/emp-leave")
-	public String updateLeaves(@RequestParam long id, @RequestParam String leaveFrom, @RequestParam String leaveTo,
-			Model model) {
-		System.out.println("inside the Leaves controller method =======");
-		System.out.println("leaveFrom : leaveTo :::: " + leaveFrom + " : " + leaveTo);
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		Date leaveFromDate = null;
-		Date leaveToDate = null;
-		try {
-			leaveFromDate = formatter.parse(leaveFrom);
-			leaveToDate = formatter.parse(leaveTo);
-			System.out.println("leaveFromDate is : " + leaveFromDate);
-			System.out.println("leaveToDate is : " + leaveToDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		private int getLeavesCountPerMonth(List<LeavesTable> reqLeavesData, int monthNum) {
+
+			int totLeavesInMonth = 0;
+
+	 
+
+			for (Iterator<LeavesTable> iterator = reqLeavesData.iterator(); iterator.hasNext();) {
+
+				LeavesTable leavesTable = (LeavesTable) iterator.next();
+
+				// System.out.println("for the id : " + leavesTable.getEmpId());
+
+				String leaveFrom = leavesTable.getLeaveFrom();
+
+				String leaveTo = leavesTable.getLeaveTo();
+
+				int monthLF = Integer.parseInt((leaveFrom).split("-")[1]);
+
+				int monthLT = Integer.parseInt((leaveTo).split("-")[1]);
+
+				if (monthLF == monthNum || monthLT == monthNum) {
+
+					System.out.println("monthLF : " + monthLF);
+
+					System.out.println("1111 : totLeavesInMonth " + totLeavesInMonth);
+
+					System.out.println("leaveFrom beofre : " + leaveFrom);
+
+					System.out.println("leaveTo beofre : " + leaveTo);
+
+					if (monthLF == monthNum && monthLT > monthNum) {
+
+						Calendar leaveFromCalObj = getCalendarObj(leaveFrom);
+
+						int leaveToTemp = leaveFromCalObj.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+						String leaveFromDate = leaveFrom.split("-")[2];
+
+						leaveTo = leaveFrom.replace(leaveFromDate, Integer.toString(leaveToTemp));
+
+					} else if (monthLT == monthNum && monthLF < monthNum) {
+
+						String leaveFromDateTemp = "1";
+						String leaveFromMonth = leaveFrom.split("-")[1];
+						String leaveFromDate = leaveFrom.split("-")[2];
+						leaveFrom = leaveFrom.replace(leaveFromMonth, Integer.toString(monthLT)).replace(leaveFromDate,
+								leaveFromDateTemp);
+
+					}
+					totLeavesInMonth = totLeavesInMonth + getLeavesCount(leaveFrom, leaveTo);
+					System.out.println("totLeavesInMonth " + totLeavesInMonth);
+				}	 
+			}
+			System.out.println("Tot Leaves in the month : " + monthNum + " is :::::: " + totLeavesInMonth);
+			return totLeavesInMonth;
+
 		}
-		long leavesCount = getLeavesCount(leaveFrom, leaveTo);
 
-		long monthNum = 1;
-		long yearNum = 2023;
-		LeavesTable leavesTable = new LeavesTable();
-		leavesTable.setEmpId(id);
-		leavesTable.setLeaveFrom(leaveFrom);
-		leavesTable.setLeaveTo(leaveTo);
-		leavesTable.setMonthNumber(monthNum);
-		leavesTable.setYearNumber(yearNum);
-		leavesTable.setLeavesCount(leavesCount);
-		leavesTable.setLeaveFromDate(leaveFromDate);
-		leavesTable.setLeaveToDate(leaveToDate);
-		Optional<Employee> empData = employeeRepository.findById(id);
-		Employee currentEmp = empData.get();
-		model.addAttribute("empDetails", currentEmp);
-		leavesRepository.save(leavesTable);
-		return "emp-leave";
+	 
 
-	}
+		@PostMapping(path = "/emp-leave")
+		public String updateLeaves(@RequestParam long id, @RequestParam String leaveFrom, @RequestParam String leaveTo,
+				Model model) {
+			System.out.println("inside the Leaves controller method =======");
+			System.out.println("leaveFrom : leaveTo :::: " + leaveFrom + " : " + leaveTo);
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			Date leaveFromDate = null;
+			Date leaveToDate = null;
 
-	private int getLeavesCount(String leaveFrom, String leaveTo) {
-		// TO DO - write code to find out the working days between these dates!
-		Calendar frmCalendar = getCalendarObj(leaveFrom);
-		Calendar toCalendar = getCalendarObj(leaveTo);
-		int workingDays = 0;
-		System.out.println("frmCalendar.get(Calendar.MONTH) is : " + frmCalendar.get(Calendar.MONTH));
-		System.out.println("toCalendar.get(Calendar.MONTH) is : " + toCalendar.get(Calendar.MONTH));
-		while (toCalendar.get(Calendar.MONTH) >= frmCalendar.get(Calendar.MONTH)) {
-			if (toCalendar.get(Calendar.MONTH) > frmCalendar.get(Calendar.MONTH)) {
-				int dayOfWeek = frmCalendar.get(Calendar.DAY_OF_WEEK);
-				if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
-					workingDays++;
-				}
-				frmCalendar.add(Calendar.DAY_OF_MONTH, 1);
-			} else {
-				if (toCalendar.get(Calendar.DATE) >= frmCalendar.get(Calendar.DATE)) {
+			try {
+
+				leaveFromDate = formatter.parse(leaveFrom);
+				leaveToDate = formatter.parse(leaveTo);
+				System.out.println("leaveFromDate is : " + leaveFromDate);
+				System.out.println("leaveToDate is : " + leaveToDate);
+
+			} catch (ParseException e) {
+
+				e.printStackTrace();
+
+			}
+
+			long leavesCount = getLeavesCount(leaveFrom, leaveTo);
+			long monthNum = 1;
+			long yearNum = 2023;
+			LeavesTable leavesTable = new LeavesTable();
+			leavesTable.setEmpId(id);
+			leavesTable.setLeaveFrom(leaveFrom);
+			leavesTable.setLeaveTo(leaveTo);
+			leavesTable.setMonthNumber(monthNum);
+			leavesTable.setYearNumber(yearNum);
+			leavesTable.setLeavesCount(leavesCount);
+			leavesTable.setLeaveFromDate(leaveFromDate);
+			leavesTable.setLeaveToDate(leaveToDate);
+			Optional<Employee> empData = employeeRepository.findById(id);
+			Employee currentEmp = empData.get();
+			model.addAttribute("empDetails", currentEmp);
+			leavesRepository.save(leavesTable);
+			return "emp-leave";
+
+		}
+		
+		private int getLeavesCount(String leaveFrom, String leaveTo) {
+
+			// TO DO - write code to find out the working days between these dates!
+
+			Calendar frmCalendar = getCalendarObj(leaveFrom);
+			Calendar toCalendar = getCalendarObj(leaveTo);
+
+			int workingDays = 0;
+
+			System.out.println("frmCalendar.get(Calendar.MONTH) is : " + frmCalendar.get(Calendar.MONTH));
+			System.out.println("toCalendar.get(Calendar.MONTH) is : " + toCalendar.get(Calendar.MONTH));
+			while (toCalendar.get(Calendar.MONTH) >= frmCalendar.get(Calendar.MONTH)) {
+				if (toCalendar.get(Calendar.MONTH) > frmCalendar.get(Calendar.MONTH)) {
 					int dayOfWeek = frmCalendar.get(Calendar.DAY_OF_WEEK);
 					if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
 						workingDays++;
 					}
+
 					frmCalendar.add(Calendar.DAY_OF_MONTH, 1);
 				} else {
-					break;
-				}
+					if (toCalendar.get(Calendar.DATE) >= frmCalendar.get(Calendar.DATE)) {
+						int dayOfWeek = frmCalendar.get(Calendar.DAY_OF_WEEK);
+						if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
+							workingDays++;
 
+						}
+
+						frmCalendar.add(Calendar.DAY_OF_MONTH, 1);
+
+					} else {
+
+						break;
+
+					}
+				}
 			}
 
+			System.out.println("workingDays are : " + workingDays);
+			return workingDays;
 		}
-		System.out.println("workingDays are : " + workingDays);
 
-		return workingDays;
-	}
+		private static Calendar getCalendarObj(String dateStr) {
 
-	private static Calendar getCalendarObj(String dateStr) {
 		// dateStr in the format of "2023-09-21"
-		String[] str = dateStr.split("-");
-		String year = str[0];
-		String month = str[1];
-		String date = str[2];
-		int yearNum = Integer.parseInt(year);
-		int monthNum = Integer.parseInt(month);
-		int dateNum = Integer.parseInt(date);
-		String breakPt = " : ";
-		System.out.println("year : month : date : " + year + breakPt + month + breakPt + date);
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(yearNum, monthNum - 1, dateNum);
-		return calendar;
-	}
+
+			String[] str = dateStr.split("-");
+			String year = str[0];
+			String month = str[1];
+			String date = str[2];
+			
+			int yearNum = Integer.parseInt(year);
+			int monthNum = Integer.parseInt(month);
+			int dateNum = Integer.parseInt(date);
+			String breakPt = " : ";
+			System.out.println("year : month : date : " + year + breakPt + month + breakPt + date);
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(yearNum, monthNum - 1, dateNum);
+			return calendar;
+		}
 
 	@PostMapping(path = "/updatesalary")
 	public String updateProfilePost(@ModelAttribute Employee empFrmReq, @RequestParam long leavesTaken,
