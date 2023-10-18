@@ -125,13 +125,14 @@ public class EmployeeController {
 		model.addAttribute("employeeList", jsonObj);
 		return "emplist";
 	}
-
+	
 	@GetMapping(path = "/create")
 	public String greetingForm(Model model) {
 		System.out.println("inside get create employee method");
 		model.addAttribute("employee", new Employee());
 		return "empcreate";
 	}
+	
 	@GetMapping(path = "/registration")
 	public String registrationForm(Model model) {
 		System.out.println("inside get create employee method");
@@ -156,7 +157,7 @@ public class EmployeeController {
 	    emp.setProjectAllocationDate(registrationForm.getProjectAllocationDate());
 	    emp.setWorkAllocationDays(registrationForm.getWorkAllocationDays());
 	    emp.setMonthlySalary(registrationForm.getMonthlySalary());
-        emp.setWorkType(registrationForm.getWorkType());
+        emp.setWorkType(registrationForm.getWorkType());                                            
 
 
 	    // Save the new employee to the database
@@ -189,55 +190,7 @@ public class EmployeeController {
 		model.addAttribute("depDetails", currentEmp.getSurname());
 		return "updateemployee";
 	}
-
-	
-//	@GetMapping("/updateemployee")
-//	public String getEmployeeDetailsForUpdate(@RequestParam Long employeeId, Model model) {
-//	    // Retrieve the employee details by ID
-//	    Optional<Registration> optionalEmployee = registrationRepository.findById(employeeId);
-//
-//	    if (optionalEmployee.isPresent()) {
-//	        Registration employee = optionalEmployee.get();
-//	        model.addAttribute("employee", employee);
-//	        return "updateemployee"; // Define your update employee details template
-//	    } else {
-//	        // Handle the case where the employee is not found, you can redirect or show an error message
-//	        return "error-page"; // Define an error page in your templates
-//	    }
-//	}
-
-	
-	
-
-//	@GetMapping("/update/{id}")
-//    public String updateEmployee(@PathVariable("id") Long id, Model model) {
-//        // Retrieve the employee record from the database by ID
-//        Optional<Registration> employee = registrationRepository.findById(id);
-//        if (employee.isPresent()) {
-//            model.addAttribute("employee", employee.get());
-//            return "updateemployee"; // Create a new Thymeleaf template for updating employee details
-//        } else {
-//            return "notfound"; // Create a template for displaying a "not found" message
-//        }
-//    }
-//
-//
-//    // Step 2: Add a method to handle the delete operation
-//    @GetMapping("/delete/{id}")
-//    public String deleteEmployee(@PathVariable("id") Long id) {
-//        // Delete the employee record from the database by ID
-//        registrationRepository.deleteById(id);
-//        return "redirect:/employeeinfo"; // Redirect to the employee info page after deletion
-//    }
-//    
-//    
-//    @PostMapping("/save-updated-employee")
-//    public String saveUpdatedEmployee(@ModelAttribute Registration updatedEmployee) {
-//        // Save the updated employee details to the database
-//        registrationRepository.save(updatedEmployee);
-//        return "redirect:/employeeinfo"; // Redirect to the employee info page after updating
-//    }
-    
+		
     
 	  @GetMapping("/employeeleave")
 	    public String listLeaves(Model model) {
@@ -286,29 +239,18 @@ public class EmployeeController {
 	       // Save the new salary to the database
 	        salaries1Repository.save(employee);
 
-	 
-
 	        // Redirect to a confirmation page or the "salaries1" page
 
 	        return "payslips"; // Replace with the appropriate URL
 	    }
 
+	    
 	    @GetMapping("/payslips")
-
 	    public String displayPayslips(Model model) {
-
 	        // Fetch all payslip data from the database or your data source
-
 	        List<Salaries1> salaries1s = salaries1Repository.findAll(); // Implement this method to fetch payslips
-
-	 
-
 	        // Pass the payslip data to the Thymeleaf template
-
 	        model.addAttribute("salaries1", salaries1s);
-
-	 
-
 	        return "payslips"; // Ensure that "payslips" is the correct template name
 
 	    }
@@ -536,6 +478,7 @@ public class EmployeeController {
 		return "list-salaries";
 	}
 
+	
 	@GetMapping(path = "/updatesalary")
 	public String updateSalary(@RequestParam long id, Model model) {
 		System.out.println("inside the update salary controller method");
