@@ -185,13 +185,9 @@ public class EmployeeController {
 	}
 	
 	@GetMapping(path = "/salaries1")
-
 	public String salariesForm(Model model) {
-
 		System.out.println("inside get create employee method");
-
 		model.addAttribute("employee", new Employee());
-
 		return "salaries1";
 
 	}
@@ -199,74 +195,51 @@ public class EmployeeController {
 	
 
     @PostMapping(path="/salaries1")
-
     public String submitSalaryForm(@ModelAttribute Salaries1 salaryForm, Model model) {
 
         // Create a new Salary object and set its attributes based on the form data
 
- 
-
         Salaries1 employee = new Salaries1();
 
         employee.setName(salaryForm.getName());
-
         employee.setDesignation(salaryForm.getDesignation());
-
         employee.setDoj(salaryForm.getDoj());
-
         employee.setPayperiod(salaryForm.getPayperiod());
-
         employee.setPaydate(salaryForm.getPaydate());
-
         employee.setPfnumber(salaryForm.getPfnumber());
-
         employee.setBankaccountnumber(salaryForm.getBankaccountnumber());
-
- 
 
         // Save the new salary to the database
 
         salaries1Repository.save(employee);
 
- 
-
         // Redirect to a confirmation page or the "salaries1" page
-
         return "payslips"; // Replace with the appropriate URL
-
     }
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
+     
     @GetMapping("/payslips")
-
     public String displayPayslips(Model model) {
 
-        // Fetch all payslip data from the database or your data source
+        // Fetch all salaries1 data from the database or your data source
 
         List<Salaries1> salaries1s = salaries1Repository.findAll(); // Implement this method to fetch payslips
 
- 
-
-        // Pass the payslip data to the Thymeleaf template
+        // Pass the salaries1 data to the Thymeleaf template
 
         model.addAttribute("salaries1", salaries1s);
-
- 
-
         return "payslips"; // Ensure that "payslips" is the correct template name
 
     }
+    
+//    @GetMapping("/deleteprofile")
+//    public String deleteEmployeeProfile(@RequestParam Long id) {
+//        // Implement the code to delete the employee with the given ID
+//        // You can use a service or repository to perform the deletion
+//        employeeService.deleteEmployeeById(id); // Replace with the actual method
+//        return "redirect:/employeeinformation"; // Redirect back to the employee information page
+//    }
+
 	
 	@GetMapping(path = "/updateprofile")
 	public String updateProfile(@RequestParam long id, Model model) {

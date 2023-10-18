@@ -6,8 +6,6 @@
 
     <div th:include="emp-header"></div>
 
- 
-
     <body>
 
         <!-- Navbar -->
@@ -40,10 +38,6 @@
 
                     <head>
 
-                    
-
-                    
-
                         <style>
 
                             /* Style for the circular info icon */
@@ -74,8 +68,6 @@
 
                             }
 
- 
-
                             /* Tooltip container */
 
                             .tooltip {
@@ -85,9 +77,7 @@
                                 display: inline-block;
 
                             }
-
  
-
                             /* Tooltip text on the right side */
 
                             .tooltiptext {
@@ -168,6 +158,11 @@
                                 width: 200px; /* Set the width based on your design */
 
                             }
+                            
+                            .radio-group div {
+                             margin-bottom: 10px;
+}
+                            
 
                             
 
@@ -499,35 +494,32 @@
 
                             <br> <br>
 
- 
 
-                            <!-- Work Type -->
 
-                            <div class="form-field tooltip">
 
-                                <label>Work Type:</label>
+						<!-- Work Type -->
+						<div class="form-field tooltip">
+							<label>Work Type:</label>
+							<div class="radio-group">
+								<div>
+									<input type="radio" id="fullTime" name="worktype"
+										value="fullTime"> <label for="fullTime">Full-time</label>
+								</div>
+								<div>
+									<input type="radio" id="freelance" name="worktype"
+										value="freelance"> <label for="freelance">Freelance</label>
+								</div>
+								<div>
+									<input type="radio" id="intern" name="worktype" value="intern">
+									<label for="intern">Intern</label>
+								</div>
+							</div>
 
-                                <input type="radio" id="fullTime" name="worktype" value="fullTime">
+							<div class="info-icon">&#9432;</div>
+							<div class="tooltiptext">Select your work type.</div>
+						</div>
 
-                                <label for="fullTime">Full-time</label>
-
-                                <input type="radio" id="freelance" name="worktype" value="freelance">
-
-                                <label for="freelance">Freelance</label>
-
-                                <input type="radio" id="intern" name="worktype" value="intern">
-
-                                <label for="intern">Intern</label>
-
-                                <div class="info-icon">&#9432;</div>
-
-                                <div class="tooltiptext">Select your work type.</div>
-
-                            </div>
-
- 
-
-                            <br> <br>
+						<br> <br>
 
  
 
@@ -551,31 +543,20 @@
 
                          <script>
 
-        function validateDates() {
+                         function validateDates() {
+                        	    var doj = document.getElementById("doj").value;
+                        	    var projectAllocationDate = document.getElementById("projectallocationdate").value;
 
-            var doj = document.getElementById("doj").value;
+                        	    if (doj === projectAllocationDate) {
+                        	        // Dates match, so you can submit the form
+                        	        return true; // Allow form submission
+                        	    } else {
+                        	        // Dates don't match, show an error message
+                        	        alert("Dates do not match. Please make sure Project Allocation Date matches with DOJ.");
+                        	        return false; // Prevent form submission
+                        	    }
+                        	}
 
-            var projectAllocationDate = document.getElementById("projectAllocationDate").value;
-
- 
-
-            if (doj === projectAllocationDate) {
-
-                // Dates match, so you can submit the form
-
-                return true; // Allow form submission
-
-            } else {
-
-                // Dates don't match, show an error message
-
-                alert("Dates do not match. Please make sure Project Allocation Date matches with DOJ.");
-
-                return false; // Prevent form submission
-
-            }
-
-        }
 
     </script>
 
