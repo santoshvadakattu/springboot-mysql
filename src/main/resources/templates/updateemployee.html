@@ -22,7 +22,8 @@
 
                     <div th:include="header"></div>
 
-                    <form th:action="@{/employee/updateemployee}" th:object="${empDetails}" method="post">
+                    <form th:action="@{/employee/updateemployee(id=${empDetails.id})}" th:object="${empDetails}" method="post">
+
 
                         <section>
 
@@ -32,7 +33,7 @@
 
                             <p>ID: <input type="text" th:value="${empDetails.id}" readonly size="100" /></p>
 
-                            <p>First Name: <input type="text" th:field="*{firstname}" size="100" /></p>
+                             <p>First Name: <input type="text" th:field="*{firstname}" size="100" /></p>
                             <p>Primary Mobile No: <input type="text" th:field="*{primarymobileno}" size="100" /></p>
                             <p>Email Id: <input type="text" th:field="*{emailid}" size="100" /></p>
                             <p>Project Name: <input type="text" th:field="*{projectname}" size="100" /></p>

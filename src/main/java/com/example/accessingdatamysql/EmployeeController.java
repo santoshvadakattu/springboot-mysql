@@ -266,11 +266,40 @@ public class EmployeeController {
 		return "updateemployee";
 
 	}
+	  
+	@PostMapping(path = "/updateemployee")
+	public String updateEmployeeDetails(@ModelAttribute EmployeePortal updatedEmployee, Model model) {
+	    // Get the original employee ID
+	    long id = updatedEmployee.getId();
+
+	    // Retrieve the existing employee data from the database
+	    Optional<EmployeePortal> empData = employeeportalRepository.findById(id);
+
+	    if (empData.isPresent()) {
+	        EmployeePortal currentEmp = empData.get();
+
+	        // Update the existing employee with the data from the form
+	        currentEmp.setFirstname(updatedEmployee.getFirstname());
+	        currentEmp.setPrimarymobileno(updatedEmployee.getPrimarymobileno());
+	        currentEmp.setEmailid(updatedEmployee.getEmailid());
+	        currentEmp.setProjectname(updatedEmployee.getProjectname());
+	        currentEmp.setWorkallocationdays(updatedEmployee.getWorkallocationdays());
+	        currentEmp.setMonthlysalary(updatedEmployee.getMonthlysalary());
+	        currentEmp.setWorktype(updatedEmployee.getWorktype());
+
+	        // Save the updated employee back to the database
+	        employeeportalRepository.save(currentEmp);
+
+	        // Redirect to a confirmation page or the relevant page
+	        return "employeeinformation"; // Replace with the appropriate URL
+	    } else {
+	        // Handle the case where the employee with the specified ID was not found
+	        return "errorPage"; // Replace with an error page URL
+	    }
+	}
 
 
-
-
-
+	
 
 	@GetMapping(path = "/emplist")
 	public String listUsers(Model model) {
