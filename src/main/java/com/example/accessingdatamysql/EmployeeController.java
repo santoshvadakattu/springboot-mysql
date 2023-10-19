@@ -190,6 +190,33 @@ public class EmployeeController {
 		model.addAttribute("depDetails", currentEmp.getSurname());
 		return "updateemployee";
 	}
+
+	
+	@PostMapping(path = "/updateemployee")
+	public String updateEmployeeDetails(@ModelAttribute Registration updatedEmployee, Model model) {
+	    // Get the original employee ID
+	    long id = updatedEmployee.getId();
+	    // Retrieve the existing employee data from the database
+	    Optional<Registration> empData = registrationRepository.findById(id);
+	    if (empData.isPresent()) {
+	        Registration currentEmp = empData.get();
+	        // Update the existing employee with the data from the form
+	        currentEmp.setFirstName(updatedEmployee.getFirstName());
+	        currentEmp.setPrimaryMobile(updatedEmployee.getPrimaryMobile());
+	        currentEmp.setEmail(updatedEmployee.getEmail());
+	        currentEmp.setProjectName(updatedEmployee.getProjectName());
+	        currentEmp.setWorkAllocationDays(updatedEmployee.getWorkAllocationDays());
+	        currentEmp.setMonthlySalary(updatedEmployee.getMonthlySalary());
+	        currentEmp.setWorkType(updatedEmployee.getWorkType());
+	        // Save the updated employee back to the database
+	        registrationRepository.save(currentEmp);
+	        // Redirect to a confirmation page or the relevant page
+	        return "employeeinfo"; // Replace with the appropriate URL
+	    } else {
+	        // Handle the case where the employee with the specified ID was not found
+	        return "errorPage"; // Replace with an error page URL
+    }
+	}
 		
     
 	  @GetMapping("/employeeleave")
