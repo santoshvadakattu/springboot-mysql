@@ -1,0 +1,36 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+    <div th:include="emp-header"></div>
+
+    <body>
+        <div th:include="emp-navigation"></div>
+        <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+        <div class="w3-main" style="margin-left:250px">
+            <div class="w3-row w3-padding-64">
+                <div class="w3-twothird w3-container">
+                    <h1>Update Details</h1>
+                    <div th:include="header"></div>
+                  <form th:action="@{/employee/updateemployee(id=${empDetails.id})}" th:object="${empDetails}" method="post">
+                        <section>
+                            <hr>
+                        
+                            <p>ID: <input type="text" th:value="${empDetails.id}" readonly size="100" /></p>
+                            <p>First Name: <input type="text" th:field="*{firstName}" size="100" /></p>
+                             <p>Mobile no: <input type="text" th:field="*{primaryMobile}" size="100" /></p>
+                              <p>Email: <input type="text" th:field="*{email}" size="100" /></p>
+                               <p>Project Name: <input type="text" th:field="*{projectName}" size="100" /></p>
+                                <p>Work Allocation Days: <input type="text" th:field="*{workAllocationDays}" size="100" /></p>
+                                <p>Salary: <input type="text" th:field="*{monthlySalary}" size="100" /></p>
+                            <p>Worktype: <input type="text" th:field="*{workType}" size="100" /></p>
+                        </section>
+                        <p><input type="submit" value="Update" /> <input type="reset" value="Reset" /></p>
+                    </form>
+                </div>
+            </div>
+            <!-- END MAIN -->
+        </div>
+    </body>
+    <div th:include="emp-footer"></div>
+</html>
+
