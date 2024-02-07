@@ -1,0 +1,634 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+   <!-- Include header and navigation -->
+   <div th:include="emp-header"></div>
+
+    <body>
+ <!-- Navbar -->
+ <div th:include="emp-navigation"></div>
+   <!-- Overlay effect when opening sidebar on small screens -->
+    <div class="w3-overlay w3-hide-large" onclick="w3_close()"
+       style="cursor: pointer" title="close side menu" id="myOverlay"></div>
+   <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
+    <div class="w3-main" style="margin-left: 250px">
+        <div class="w3-row w3-padding-64">
+
+                <div class="w3-twothird w3-container">
+
+                    <div class="w3-overlay w3-hide-large" onclick="w3_close()"
+                style="cursor: pointer" title="close side menu" id="myOverlay"></div>
+               <head>
+
+                <style>
+                      /* Style for the circular info icon */
+                      .info-icon {
+                        width: 30px;
+                         height: 30px;
+                         background-color: white;
+                       border-radius: 50%;
+                       text-align: center;
+                      line-height: 30px;
+                     color: black;
+                      font-weight: bold;
+                           cursor: pointer;
+                             display: inline-block;
+
+ 
+
+                                margin-left: 10px; /* Adjust spacing between icon and input */
+                         }
+
+                         /* Tooltip container */
+                  .tooltip {
+                      position: relative;
+                     display: inline-block;
+
+                            }
+                            /* Tooltip text on the right side */
+                         .tooltiptext {
+                                visibility: hidden;
+                             width: 200px;
+                           background-color: #333;
+                            color: #fff;
+                        text-align: left;
+                         border-radius: 6px;
+                                padding: 10px;
+                                position: absolute;
+                                z-index: 1;
+                                top: 50%;
+                               left: 100%; /* Position it to the right of the info icon */
+                                transform: translateY(-50%); /* Center vertically */
+                                opacity: 0;
+                                transition: opacity 0.3s;
+                            }
+                        /* Style for the radio buttons in a single line */
+
+                           
+
+                                .form-field input[type="radio"] {
+
+                                
+
+                                   display: inline;
+
+                                   
+
+                              margin-right: 10px; /* Adjust the spacing between radio buttons */
+
+                              
+
+                              }
+
+                            /* Show the tooltip text when hovering over the info icon */
+                            .info-icon:hover + .tooltiptext {
+                               visibility: visible;
+             opacity: 1;
+              }
+                /* Adjust text alignment for labels and inputs */
+
+ 
+
+                            .form-field label {
+
+ 
+
+                                display: inline-block;
+
+ 
+
+                                width: 150px; /* Set the width based on your design */
+
+ 
+
+                                text-align: right;
+
+ 
+
+                                margin-right: 10px;
+
+ 
+
+                            }
+                          .form-field input, .form-field select, .form-field textarea {
+                              width: 200px; /* Set the width based on your design */
+
+ 
+
+                            }
+
+                   </style>
+                    </head>
+             <body>
+                  <h1>Employee Registration</h1>
+                 <form action="#" th:action="@{/employee/registration}" th:object="${employee}" method="post" onsubmit="return validateDates()">
+                    <!-- First Name -->
+
+                   <div class="form-field tooltip">
+
+                         <label for="firstName">First Name:</label>
+
+                         <input type="text" id="firstName" name="firstName" required>
+                      <div class="info-icon">&#9432;</div>
+                     <div class="tooltiptext">Enter your first name.</div>
+
+                 </div>
+
+                <br> <br>
+
+               <!-- Surname -->
+
+             <div class="form-field tooltip">
+               <label for="surname">Surname:</label>
+
+                <input type="text" id="surname" name="surname" required>
+
+ 
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter your surname.</div>
+                </div>
+
+                  <br> <br>
+                <!-- Email -->
+
+ 
+
+                            <div class="form-field tooltip">
+
+ 
+
+                                <label for="email">Email:</label>
+
+ 
+
+                                <input type="email" id="email" name="email" required>
+
+ 
+
+                                <div class ="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter a valid email address.</div>
+
+ 
+
+                            </div>
+
+                     <br> <br>
+
+                            <!-- Sex -->
+
+ 
+
+                            <div class="form-field tooltip">
+
+ 
+
+                                <label for="sex">Sex:</label>
+
+ 
+
+                                <select id="sex" name="sex">
+
+ 
+
+                                    <option value="male">Male</option>
+
+ 
+
+                                    <option value="female">Female</option>
+
+ 
+
+                                    <option value="other">Other</option>
+
+ 
+
+                                </select>
+
+ 
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Select your gender.</div>
+
+ 
+
+                            </div>
+            <br> <br>
+            
+         <!-- Primary Mobile -->
+        <div class="form-field tooltip">
+      <label for="primaryMobile">Primary Mobile:</label>
+     <input type="tel" id="primaryMobile" name="primaryMobile"
+     pattern="[0-9]{10}" placeholder="xxxxxxxxxx" required>
+      <div class="info-icon">&#9432;</div>
+
+        <div class="tooltiptext">Enter your primary mobile number.</div>
+
+ 
+
+                            </div>
+                     <br> <br>
+                     
+                     
+                     
+                <!-- Secondary Mobile -->
+                
+           <div class="form-field tooltip">
+              <label for="secondaryMobile">Secondary Mobile:</label>
+
+ 
+
+                                <input type="tel" id="secondaryMobile" name="secondaryMobile"
+
+ 
+
+                                    placeholder="optional">
+
+ 
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter your secondary mobile number (optional).</div>
+
+ 
+
+                            </div>
+
+ 
+
+ 
+
+ 
+
+                            <br> <br>
+
+ 
+
+ 
+
+ 
+
+                            <!-- Address -->
+
+ 
+
+                            <div class="form-field tooltip">
+
+ 
+
+                                <label for="address">Address:</label>
+
+ 
+
+                                <textarea id="address" name="address" required></textarea>
+
+ 
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter your address.</div>
+
+ 
+
+                            </div>
+
+         <br> <br>
+
+ 
+                            <!-- Landmark -->
+
+ 
+
+                            <div class="form-field tooltip">
+
+ 
+
+                                <label for="landmark">Landmark:</label>
+
+ 
+
+                                <input type="text" id="landmark" name="landmark" required>
+
+ 
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter a landmark near your address.</div>
+        </div>
+     <br> <br>
+
+                              
+                                  
+                                  <!-- Zip Code -->
+
+                            <div class="form-field tooltip">
+
+                   <label for="zipCode">Zip Code:</label>
+
+                                <input type="text" id="zipCode" name="zipCode" required>
+                     <div class="info-icon">&#9432;</div>
+
+                                <div class="tooltiptext">Enter your zip code.</div>
+                  </div>
+              <br> <br>
+
+
+
+                            <!-- Date of Joining (DOJ) -->
+                          <div class="form-field tooltip">
+
+ 
+
+                                <label for="doj">Date of Joining (DOJ):</label>
+
+ 
+
+                                <input type="date" id="doj" name="doj" required>
+
+ 
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter your date of joining.</div>
+
+ 
+
+                            </div>
+            <br> <br>
+
+ 
+
+                            <!-- Aadhar Number -->
+
+                            <div class="form-field tooltip">
+
+                                <label for="aadhar">Aadhar Number:</label>
+                                <input type="text" id="aadhar" name="aadhar" pattern="[0-9]{12}"
+
+                                    placeholder="xxxxxxxxxxxx" required>
+
+ 
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter your Aadhar number.</div>
+
+ 
+
+                            </div>
+
+ 
+                            <br> <br>
+
+ 
+                            <!-- Project Name -->
+
+                            <div class="form-field tooltip">
+
+                                <label for="projectName">Project Name:</label>
+
+                                <input type="text" id="projectName" name="projectName" required>
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter the project name.</div>
+
+ 
+
+                            </div>
+
+ 
+
+ 
+
+ 
+
+                            <br> <br>
+
+ 
+
+ 
+
+ 
+
+                            <!-- Project Allocation Date -->
+
+ 
+
+                            <div class="form-field tooltip">
+
+ 
+
+                                <label for="projectAllocationDate">Project Allocation Date:</label>
+
+ 
+
+                                <input placeholder="should match with DOJ" type="date" id="projectAllocationDate" name="projectAllocationDate" required>
+
+ 
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter the project allocation date (should match with DOJ).</div>
+
+ 
+
+                            </div>
+
+ 
+
+ 
+
+ 
+
+                            <br> <br>
+
+ 
+
+ 
+
+ 
+
+                            <!-- Monthly Salary -->
+
+ 
+
+                            <div class="form-field tooltip">
+
+ 
+
+                                <label for="monthlySalary">Monthly Salary:</label>
+
+ 
+
+                                <input type="text" id="monthlySalary" name="monthlySalary">
+
+ 
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter your monthly salary.</div>
+
+ 
+
+                            </div>
+
+ 
+
+ 
+
+ 
+
+                            <br> <br>
+
+ 
+
+ 
+
+ 
+
+                            <!-- Work Allocation Days -->
+
+ 
+
+                            <div class="form-field tooltip">
+
+ 
+
+                                <label for="workAllocationDays">Work Allocation Days:</label>
+
+ 
+
+                                <input type="number" id="workAllocationDays" name="workAllocationDays">
+
+ 
+
+                                <div class="info-icon">&#9432;</div>
+
+ 
+
+                                <div class="tooltiptext">Enter the number of work allocation days.</div>
+
+ 
+
+                            </div>
+
+ 
+                            <br> <br>
+
+ <!-- Work Type -->
+
+						<div class="form-field tooltip">
+
+							<label>Work Type:</label>
+
+							<div class="radio-group">
+
+								<div>
+
+									<input type="radio" id="fullTime" name="worktype"
+
+										value="fullTime"> <label for="fullTime">Full-time</label>
+
+								</div>
+
+								<div>
+
+									<input type="radio" id="freelance" name="worktype"
+
+										value="freelance"> <label for="freelance">Freelance</label>
+
+								</div>
+
+								<div>
+
+									<input type="radio" id="intern" name="worktype" value="intern">
+
+									<label for="intern">Intern</label>
+
+								</div>
+
+							</div>
+
+ 
+
+							<div class="info-icon">&#9432;</div>
+
+							<div class="tooltiptext">Select your work type.</div>
+
+						</div>
+
+ 
+                            <br> <br>
+
+ 
+                            <!-- Button Container -->
+
+                            <div class="button-container">
+                                <button type="submit">Submit</button>
+                                <button type="reset" class="clear-button">Clear</button>
+                            </div>
+                        </form>
+
+ <script>
+
+        function validateDates() {
+
+            var doj = document.getElementById("doj").value;
+
+            var projectAllocationDate = document.getElementById("projectAllocationDate").value;
+            if (doj === projectAllocationDate) {
+
+                // Dates match, so you can submit the form
+
+                return true; // Allow form submission
+
+            } else {
+
+                // Dates don't match, show an error message
+
+                alert("Dates do not match. Please make sure Project Allocation Date matches with DOJ.");
+                return false; // Prevent form submission
+
+            }
+
+        }
+
+ 
+    </script>
+
+                    </body>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </body>
+
+</html>

@@ -58,12 +58,24 @@
 
 
 
-            <form action="#" th:action="@{/demo/updateprofile}" th:object="${user}" enctype="multipart/form-data" method="post">
+            <form action="@{/employee/updateprofile/{id}}" th:action="@{/employee/updateprofile/{id}}" th:object="${userDetails}" enctype="multipart/form-data" method="post">
                <section>
                   <h2> Personal Details </h2>
                   <hr>
                   <p>ID : <input type="text" th:value="${usersDetails.id}" disabled size="100" /></p>
                   <p><input type="hidden" th:field="${usersDetails.id}" size="100" /></p>
+             <p>Name : <input type="text" th:field="${usersDetails.name}" size="100" /></p>
+             <!--<p>First Name : <input type="text" th:field="${usersDetails.name}" size="100" /></p> -->
+               <p>Department : <input type="text" th:field="${usersDetails.depName}" size="100" /></p>
+                <p>Salary : <input type="text" th:field="${usersDetails.salary1}" size="100" /></p>
+                 <p>Tax : <input type="text" th:field="${usersDetails.taxSlab}" size="100" /></p>
+                 <p>Address : <input type="text" th:field="${usersDetails.address1}" size="100" /></p>
+                  <p>Street : <input type="text" th:field="${usersDetails.street}" size="100" /></p>
+                   <p>City: <input type="text" th:field="${usersDetails.city}" size="100" /></p>
+                    <p>State : <input type="text" th:field="${usersDetails.state}" size="100" /></p>
+               
+               
+                  <!-- 
                   <p>First Name : <input type="text" th:field="${usersDetails.fName}" size="100" /></p>
                   <p>Last Name : <input type="text" th:field="${usersDetails.lName}" size="100" /></p>
 
@@ -127,8 +139,9 @@
                      </div></p>
                </section>
 
+               -->
 
-
+</section>
                <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
             </form>
          </div>
