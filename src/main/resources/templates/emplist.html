@@ -6,7 +6,6 @@
    <!-- Navbar -->
    <div th:include="emp-navigation"></div>
 
-
    <!-- Overlay effect when opening sidebar on small screens -->
    <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu"
       id="myOverlay"></div>
@@ -20,7 +19,7 @@
             </span>
             
             <h1> List of Current Employees </h1> 
-         </br>
+            </br>
             <table border="1">
                <tr>
                   <td> <strong> Name </strong></td>
@@ -37,10 +36,11 @@
                      <a th:href="@{'userdetails?id=' + ${emp.id}}"><span th:utext="${emp.name}" /></a>
                   </td>
                   <td th:text="${emp.id}"></td>
-                  <td th:text="${emp.getDepartment().getName()}"></td>
-                  <td th:text="${emp.getAddress().getStreet()}"></td>
-                  <td th:text="${emp.getAddress().getCity()}"></td>
-                  <td>
+                 <td th:if="${emp.department != null}" th:text="${emp.getDepartment().getName()}"></td>
+    <td th:if="${emp.address != null}" th:text="${emp.getAddress().getStreet()}"></td>
+    <td th:if="${emp.address != null}" th:text="${emp.getAddress().getCity()}"></td>
+   
+    <td> 
                      <a th:href="@{'updateprofile?id=' + ${emp.id}}" style="float: right;"><span>Edit Profile</span></a>
                   </td>
                   <td>
@@ -48,8 +48,9 @@
                   </td>
                </tr>
             </table>
-
-
+         </div> <!-- Add this closing div -->
+      </div>
+   </div>
 
 </body>
 

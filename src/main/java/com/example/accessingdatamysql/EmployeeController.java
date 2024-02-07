@@ -28,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,7 +56,7 @@ public class EmployeeController {
 
 	@Autowired
 	private LeavesRepository leavesRepository;
-
+	
 	@Autowired
 	private RegistrationRepository registrationRepository;
 	
@@ -64,7 +65,6 @@ public class EmployeeController {
 	
 	@Autowired
 	private HolidaysRepository holidaysRepository;
-	
 	
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -77,55 +77,117 @@ public class EmployeeController {
 		this.myService = myService;
 	}
 
-	@PostMapping(path = "/create") // Map ONLY POST Requests
-	public String addNewEmployee(@RequestParam String name, @RequestParam String depName, @RequestParam String salary,
-			Model model) {
-		// @RequestParam String city,@RequestParam Date doj,
-		// @RequestParam String street, @RequestParam String state, @RequestParam String
-		// leavesTaken
-		// @ResponseBody means the returned String is the response, not a view name
-		// @RequestParam means it is a parameter from the GET or POST request
-
-		System.out.println("entered the create Employee method");
-		Employee emp = new Employee();
-		// int idNum = Integer.parseInt(id);
-		// emp.setId(idNum);
-		emp.setName(name);
-
-		System.out.println("depName is : " + depName);
-		Department dep = new Department();
-
-		dep.setName(depName);
-		departmentRepository.save(dep);
-
-		Address address = new Address();
-		// address.setStreet(street);
-		// address.setCity(city);
-		// address.setState(state);
-		addressRepository.save(address);
-
-		Salary salObj = new Salary();
-		// int leaves = Integer.parseInt(leavesTaken);
-		int sal = Integer.parseInt(salary);
-
-		// salObj.setLeavesTaken((long) leaves);
-		// salObj.setDoj(doj);
-		salObj.setSalary((long) sal);
-		salaryRepository.save(salObj);
-
-		emp.setDepartment(dep);
-		emp.setAddress(address);
-		emp.setSalary(salObj);
-		employeeRepository.save(emp);
-		System.out.println("Employee has been created!");
-		model.addAttribute("employee", emp);
-
-		ArrayList<Employee> jsonObj = (ArrayList<Employee>) employeeRepository.findAll();
-		model.addAttribute("reqHtml", "Employee with the name " + name + "  has been created!");
-		model.addAttribute("employeeList", jsonObj);
-		return "emplist";
-	}
+//	@PostMapping(path = "/create") // Map ONLY POST Requests
+//	public String addNewEmployee(@RequestParam String name, @RequestParam String depName, @RequestParam String salary,@RequestParam String state,@RequestParam String address1, @RequestParam String city, @RequestParam String street,
+//			Model model) {
+//		// @RequestParam String city,@RequestParam Date doj,
+//		// @RequestParam String street, @RequestParam String state, @RequestParam String
+//		// leavesTaken
+//		// @ResponseBody means the returned String is the response, not a view name
+//		// @RequestParam means it is a parameter from the GET or POST request
+//
+//		System.out.println("entered the create Employee method");
+//		Employee emp = new Employee();
+//		// int idNum = Integer.parseInt(id);
+//		// emp.setId(idNum);
+//		emp.setName(name);
+//
+//		System.out.println("depName is : " + depName);
+//		Department dep = new Department();
+//
+//		dep.setName(depName);
+//		departmentRepository.save(dep);
+//		
+//		emp.setState(state);
+//		emp.setAddress1(address1);
+//		emp.SetStreet(street);
+//		emp.setCity(city);
+//		    
+//		employeeRepository.save(emp);
+//
+//		Address address = new Address();
+//		// address.setStreet(street);
+//		// address.setCity(city);
+//		// address.setState(state);
+//		addressRepository.save(address);
+//
+//		Salary salObj = new Salary();
+//		// int leaves = Integer.parseInt(leavesTaken);
+//		int sal = Integer.parseInt(salary);
+//
+//		// salObj.setLeavesTaken((long) leaves);
+//		// salObj.setDoj(doj);
+//		salObj.setSalary((long) sal);
+//		salaryRepository.save(salObj);
+//
+//		emp.setDepartment(dep);
+//		emp.setAddress(address);
+//		emp.setSalary(salObj);
+//		employeeRepository.save(emp);
+//		System.out.println("Employee has been created!");
+//		model.addAttribute("employee", emp);
+//
+//		ArrayList<Employee> jsonObj = (ArrayList<Employee>) employeeRepository.findAll();
+//		model.addAttribute("reqHtml", "Employee with the name " + name + "  has been created!");
+//		model.addAttribute("employeeList", jsonObj);
+//		return "emplist";
+//	}
+//	
 	
+	@PostMapping(path = "/create")
+	public String addNewEmployee(@RequestParam String name, 
+	                             @RequestParam String depName, 
+	                             @RequestParam String salary,
+	                             @RequestParam String taxSlab,
+	                             @RequestParam String state, 
+	                             @RequestParam String address1, 
+	                             @RequestParam String city, 
+	                             @RequestParam String street,@RequestParam(required=false) Integer salary1,
+	                             Model model) {
+	    
+	    System.out.println("entered the create Employee method");
+	    
+	    Employee emp = new Employee();
+	    emp.setName(name);
+
+	    Department dep = new Department();
+	    dep.setName(depName);
+	    departmentRepository.save(dep);
+	    
+	    emp.setState(state);
+	    emp.setAddress1(address1);
+	    emp.SetStreet(street);
+	    emp.setCity(city);
+	    emp.setdepName(depName);
+	    emp.setSalary1(salary1);
+	    emp.setTaxSlab(taxSlab);
+	    
+	    
+	    employeeRepository.save(emp);
+
+	    Address address = new Address();
+	    addressRepository.save(address);
+
+	    Salary salObj = new Salary();
+	    int sal = Integer.parseInt(salary);
+	    salObj.setSalary((long) sal);
+	    salaryRepository.save(salObj);
+
+	    emp.setDepartment(dep);
+	    emp.setAddress(address);
+	    emp.setSalary(salObj);
+	    employeeRepository.save(emp);
+
+	    System.out.println("Employee has been created!");
+	    model.addAttribute("employee", emp);
+
+	    ArrayList<Employee> jsonObj = (ArrayList<Employee>) employeeRepository.findAll();
+	    model.addAttribute("reqHtml", "Employee with the name " + name + " has been created!");
+	    model.addAttribute("employeeList", jsonObj);
+	    
+	    return "emplist";
+	}
+
 	@GetMapping(path = "/create")
 	public String greetingForm(Model model) {
 		System.out.println("inside get create employee method");
@@ -291,6 +353,60 @@ public class EmployeeController {
 		Employee currentEmployee  = empData.get();
 		model.addAttribute("usersDetails", currentEmployee);
 		return "updateprofile";
+	}
+	
+	
+	@PostMapping("/updateprofile/{id}")
+	public String processUpdateProfile(@PathVariable long id, @ModelAttribute Employee updatedEmployee, Model model) {
+	    Optional<Employee> existingEmployeeData = employeeRepository.findById(id);
+
+	    if (existingEmployeeData.isPresent()) {
+	        Employee existingEmployee = existingEmployeeData.get();
+
+	        // Update fields based on the updatedEmployee object
+	        existingEmployee.setName(updatedEmployee.getName());
+	        existingEmployee.setAddress1(updatedEmployee.getAddress1());
+	        existingEmployee.setState(updatedEmployee.getState());
+	        existingEmployee.setCity(updatedEmployee.getCity());
+	        existingEmployee.SetStreet(updatedEmployee.getStreet());
+	        existingEmployee.setDepartment(updatedEmployee.getDepartment());
+	        existingEmployee.setSalary1(updatedEmployee.getSalary1());
+	        existingEmployee.setTaxSlab(updatedEmployee.getTaxSlab());
+	        // Update other fields as needed
+
+	        // Save the updated employee details
+	        employeeRepository.save(existingEmployee);
+
+	        model.addAttribute("user", existingEmployee);
+	        model.addAttribute("message", "Employee details updated successfully");
+	        return "success"; // You can create a success.html template
+	    } else {
+	    	
+	        // Handle the case where employee with given id is not found
+	        return "error"; // You can create an error.html template
+	    }
+	}
+
+
+//	@GetMapping(path = "/updateprofile")
+//	public String submitdetails(Model model) {
+//		System.out.println("inside get create employee method");
+//		model.addAttribute("employee", new Employee());
+//		return "success";
+//	}
+     	
+	
+	
+	@GetMapping(path = "/updatesalary")
+	public String updateSalary(@RequestParam long id, Model model) {
+		System.out.println("inside the update salary controller method");
+		model.addAttribute("employee", new Employee());
+		Optional<Employee> empData = employeeRepository.findById(id);
+		Employee currentEmp = empData.get();
+		model.addAttribute("empDetails", currentEmp);
+		System.out.println("department name is : " + currentEmp.getDepartment().getName());
+		model.addAttribute("depDetails", currentEmp.getDepartment());
+		return "updatesalary";
 	}
 
 	@GetMapping(path = "/emplist")
@@ -506,18 +622,7 @@ public class EmployeeController {
 	}
 
 	
-	@GetMapping(path = "/updatesalary")
-	public String updateSalary(@RequestParam long id, Model model) {
-		System.out.println("inside the update salary controller method");
-		model.addAttribute("employee", new Employee());
-		Optional<Employee> empData = employeeRepository.findById(id);
-		Employee currentEmp = empData.get();
-		model.addAttribute("empDetails", currentEmp);
-		System.out.println("department name is : " + currentEmp.getDepartment().getName());
-		model.addAttribute("depDetails", currentEmp.getDepartment());
-		return "updatesalary";
-	}
-
+	
 	@GetMapping(path = "/emp-getsal")
 	public String empGetSalary(@RequestParam long id, Model model) {
 		System.out.println("inside the update salary controller method");
